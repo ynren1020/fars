@@ -1,0 +1,45 @@
+---
+title: "far-vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{far-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(fars)
+```
+
+## read 2013 accident data 
+```{r}
+accident <- fars_read(system.file("extdata", "accident_2013.csv.bz2", package = "fars"))
+str(accident)
+dim(accident)
+```
+
+## create a list of data frames with columns of Month and Year in each
+```{r}
+df_list <- fars_read_years(2014)
+head(df_list[[1]])
+```
+
+## summarize accident by year and month
+```{r}
+n_accident <- fars_summarize_years(c(2013,2014))
+head(n_accident)
+
+```
+
+## plot accident map for state at a specified year 
+```{r}
+fars_map_state(1,2014)
+
+```

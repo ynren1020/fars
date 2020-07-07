@@ -22,7 +22,7 @@ fars_read <- function(filename) {
     data <- suppressMessages({
         readr::read_csv(filename, progress = FALSE)
     })
-    dplyr::tbl_df(data)
+    tibble::as_tibble(data)
 }
 
 #' create file name by year
@@ -40,8 +40,12 @@ fars_read <- function(filename) {
 #' @export
 make_filename <- function(year) {
     year <- as.integer(year)
-    sprintf("accident_%d.csv.bz2", year)
+    system.file("extdata",
+                sprintf("accident_%d.csv.bz2", year),
+                package = "fars",
+                mustWork = TRUE)
 }
+
 
 #' Read a list of years' accident files
 #'
@@ -64,7 +68,7 @@ fars_read_years <- function(years) {
         file <- make_filename(year)
         tryCatch({
             dat <- fars_read(file)
-            dplyr::mutate(dat, year = year) %>%
+            dplyr::mutate(dat,  year = YEAR) %>%
                 dplyr::select(MONTH, year)
         }, error = function(e) {
             warning("invalid year: ", year)

@@ -20,5 +20,7 @@ Imports:
     readr,
     tidyr
 Suggests:
-    testthat
-
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
